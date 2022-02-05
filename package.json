@@ -1,0 +1,22 @@
+{
+  "name": "qurangroups",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taoufiqjmari/QuranGroups.git"
+  },
+  "author": "Taoufiq Jmari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/taoufiqjmari/QuranGroups/issues"
+  },
+  "homepage": "https://github.com/taoufiqjmari/QuranGroups#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
