@@ -1,0 +1,10 @@
+<% layout('layouts/boilerplate') %>
+
+<form action="/groups" method="post">
+    <div class="mb-3">
+        <label for="number" class="form-label">Number</label>
+        <input type="number" min="0" class="form-control" id="number" name="num" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<a class="btn btn-primary" href="/groups" role="button">Back to all groups</a>

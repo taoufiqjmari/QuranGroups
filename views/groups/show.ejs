@@ -1,0 +1,21 @@
+<% layout('layouts/boilerplate') %> 
+
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-12">
+                <h1 class="border-bottom border-secondary border-2">Group <%= group.num %></h1>
+            </div>
+            <div class="col-12">
+                <ul class="list-group list-group-flush"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-5 w-50 mx-auto">
+    <a class="btn btn-secondary mb-2" href="/groups/<%= group._id %>/edit" role="button">Edit Group</a>
+    <a class="btn btn-primary" href="/groups" role="button">All Groups</a>
+    <form action="/groups/<%= group._id %>?_method=DELETE" method="POST">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
