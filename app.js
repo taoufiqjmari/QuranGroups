@@ -22,10 +22,6 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Static Assets
 app.use(express.static(path.join(__dirname, 'public')));
-// /groups             http://localhost:3000/css/style.css
-// /gourps/            http://localhost:3000/groups/css/style.css
-// /groups/new         http://localhost:3000/groups/css/style.css
-// /groups/:id/edit    http://localhost:3000/groups/:id/css/style.css
 
 // Parssing requests
 app.use(express.urlencoded({ extended: true }));
