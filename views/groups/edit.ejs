@@ -5,10 +5,12 @@
         <div class="row">
             <div class="col-3"></div>
             <div class="col-6">
-                <form action="/groups/<%= group._id %>?_method=PUT" method="POST">
+                <form action="/groups/<%= group._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
                     <div class="mb-3">
                         <label for="number" class="form-label">Number</label>
-                        <input type="number" min="0" class="form-control" id="number" name="num" value="<%= group.num %>" />
+                        <input type="number" min="1" class="form-control" id="number" name="num" value="<%= group.num %>" required />
+                        <div class="valid-feedback">Looks Good!</div>
+                        <div class="invalid-feedback">Put a number above 1</div>
                     </div>
                     <button type="submit" class="btn btn-success">Submit</button>
                     <a class="btn btn-secondary" href="/groups/<%= group._id %>" role="button">Back To Group</a>

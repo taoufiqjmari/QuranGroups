@@ -30,48 +30,96 @@ app.use(express.urlencoded({ extended: true }));
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
 
+// Errors
+const catchAsync = require('./utils/catchAsync');
+const ExperssError = require('./utils/ExpressError');
+const ExpressError = require('./utils/ExpressError');
+
+// JOI
+const Joi = require('joi');
+const { groupSchema } = require('./schemas');
+const validateGroup = (req, res, next) => {
+    const { error } = groupSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map((el) => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    } else {
+        next();
+    }
+};
+
 // Routes
 app.get('/', (req, res) => {
     res.render('home');
 });
 
-app.get('/groups', async (req, res) => {
-    const groups = await Group.find();
-    res.render('groups/index', { groups });
-});
+app.get(
+    '/groups',
+    catchAsync(async (req, res) => {
+        const groups = await Group.find();
+        res.render('groups/index', { groups });
+    })
+);
 
 app.get('/groups/new', (req, res) => {
     res.render('groups/new');
 });
 
-app.post('/groups', async (req, res) => {
-    const group = new Group(req.body);
-    await group.save();
-    res.redirect(`/groups/${group._id}`);
+app.post(
+    '/groups',
+    validateGroup,
+    catchAsync(async (req, res) => {
+        const group = new Group(req.body);
+        await group.save();
+        res.redirect(`/groups/${group._id}`);
+    })
+);
+
+app.get(
+    '/groups/:id',
+    catchAsync(async (req, res) => {
+        const { id } = req.params;
+        const group = await Group.findById(id);
+        res.render('groups/show', { group });
+    })
+);
+
+app.get(
+    '/groups/:id/edit',
+    catchAsync(async (req, res) => {
+        const { id } = req.params;
+        const group = await Group.findById(id);
+        res.render('groups/edit', { group });
+    })
+);
+
+app.put(
+    '/groups/:id',
+    validateGroup,
+    catchAsync(async (req, res) => {
+        const { id } = req.params;
+        const group = await Group.findByIdAndUpdate(id, req.body);
+        res.redirect(`/groups/${group._id}`);
+    })
+);
+
+app.delete(
+    '/groups/:id',
+    catchAsync(async (req, res) => {
+        const { id } = req.params;
+        await Group.findByIdAndDelete(id);
+        res.redirect(`/groups`);
+    })
+);
+
+app.all('*', (req, res, next) => {
+    next(new ExperssError('Page Not Found', 404));
 });
 
-app.get('/groups/:id', async (req, res) => {
-    const { id } = req.params;
-    const group = await Group.findById(id);
-    res.render('groups/show', { group });
-});
-
-app.get('/groups/:id/edit', async (req, res) => {
-    const { id } = req.params;
-    const group = await Group.findById(id);
-    res.render('groups/edit', { group });
-});
-
-app.put('/groups/:id', async (req, res) => {
-    const { id } = req.params;
-    const group = await Group.findByIdAndUpdate(id, req.body);
-    res.redirect(`/groups/${group._id}`);
-});
-
-app.delete('/groups/:id', async (req, res) => {
-    const { id } = req.params;
-    await Group.findByIdAndDelete(id);
-    res.redirect(`/groups`);
+app.use((err, req, res, next) => {
+    const { statusCode = 500 } = err;
+    if (!err.message) err.message = 'Oh No, Something Went Wrong';
+    res.status(statusCode).render('error', { err });
 });
 
 app.listen(port, () => {
