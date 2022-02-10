@@ -8,12 +8,12 @@
                 <form action="/groups/<%= group._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
                     <div class="mb-3">
                         <label for="number" class="form-label">Number</label>
-                        <input type="number" min="1" class="form-control" id="number" name="num" value="<%= group.num %>" required />
+                        <input type="number" min="1" class="form-control" id="number" name="number" value="<%= group.number %>" required />
                         <div class="valid-feedback">Looks Good!</div>
                         <div class="invalid-feedback">Put a number above 1</div>
                     </div>
                     <button type="submit" class="btn btn-success">Submit</button>
-                    <a class="btn btn-secondary" href="/groups/<%= group._id %>" role="button">Back To Group</a>
+                    <a class="btn btn-secondary mt-2 mt-sm-0" href="/groups/<%= group._id %>" role="button">Back To Group</a>
                 </form>
             </div>
         </div>

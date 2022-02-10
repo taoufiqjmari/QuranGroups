@@ -1,0 +1,21 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+    <div class="container border border-secondary border-2 py-5">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <form action="/groups/<%= member.group %>/members/<%= member._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">الإسم</label>
+                        <input type="text" class="form-control" id="name" name="name" value="<%= member.name %>" required />
+                        <div class="valid-feedback">جيد</div>
+                        <div class="invalid-feedback">يرجى وضع اسم</div>
+                    </div>
+                    <button type="submit" class="btn btn-success">تعديل</button>
+                    <a class="btn btn-secondary mt-2 mt-sm-0" href="/groups/<%= member.group %>" role="button">العودة للمجموعة</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

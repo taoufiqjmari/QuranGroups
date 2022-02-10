@@ -12,6 +12,7 @@ async function main() {
     console.log(`MongoDB: connected to '${db}' successfuly`);
 }
 const Group = require('./models/group');
+const Member = require('./models/member');
 
 // EJS
 const path = require('path');
@@ -37,7 +38,7 @@ const ExpressError = require('./utils/ExpressError');
 
 // JOI
 const Joi = require('joi');
-const { groupSchema } = require('./schemas');
+const { groupSchema, memberSchema } = require('./schemas');
 const validateGroup = (req, res, next) => {
     const { error } = groupSchema.validate(req.body);
     if (error) {
@@ -47,8 +48,18 @@ const validateGroup = (req, res, next) => {
         next();
     }
 };
+const validateMember = (req, res, next) => {
+    const { error } = memberSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map((el) => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    } else {
+        next();
+    }
+};
 
 // Routes
+// Groups
 app.get('/', (req, res) => {
     res.render('home');
 });
@@ -69,7 +80,14 @@ app.post(
     '/groups',
     validateGroup,
     catchAsync(async (req, res) => {
-        const group = new Group(req.body);
+        const { number } = req.body;
+        const group = new Group({ number });
+        // Add 60 member automatically to the group
+        for (let i = 1; i <= 60; i++) {
+            const mem = new Member({ number: i, group });
+            await mem.save();
+            group.members.push(mem);
+        }
         await group.save();
         res.redirect(`/groups/${group._id}`);
     })
@@ -79,7 +97,7 @@ app.get(
     '/groups/:id',
     catchAsync(async (req, res) => {
         const { id } = req.params;
-        const group = await Group.findById(id);
+        const group = await Group.findById(id).populate('members');
         res.render('groups/show', { group });
     })
 );
@@ -98,8 +116,8 @@ app.put(
     validateGroup,
     catchAsync(async (req, res) => {
         const { id } = req.params;
-        const group = await Group.findByIdAndUpdate(id, req.body);
-        res.redirect(`/groups/${group._id}`);
+        await Group.findByIdAndUpdate(id, req.body);
+        res.redirect(`/groups/${id}`);
     })
 );
 
@@ -109,6 +127,35 @@ app.delete(
         const { id } = req.params;
         await Group.findByIdAndDelete(id);
         res.redirect(`/groups`);
+    })
+);
+
+// Members
+app.get(
+    '/groups/:id/members/:member_id/edit',
+    catchAsync(async (req, res) => {
+        const { member_id } = req.params;
+        const member = await Member.findById(member_id);
+        res.render('members/edit', { member });
+    })
+);
+
+app.put(
+    '/groups/:id/members/:member_id',
+    catchAsync(async (req, res) => {
+        const { id, member_id } = req.params;
+        const { name } = req.body;
+        await Member.findByIdAndUpdate(member_id, { name });
+        res.redirect(`/groups/${id}`);
+    })
+);
+
+app.delete(
+    '/groups/:id/members/:member_id',
+    catchAsync(async (req, res) => {
+        const { id, member_id } = req.params;
+        await Member.findByIdAndUpdate(member_id, { name: '/////' });
+        res.redirect(`/groups/${id}`);
     })
 );
 
