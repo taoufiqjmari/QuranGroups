@@ -61,13 +61,13 @@ const validateMember = (req, res, next) => {
 // Routes
 // Groups
 app.get('/', (req, res) => {
-    res.render('home');
+    res.redirect('/groups');
 });
 
 app.get(
     '/groups',
     catchAsync(async (req, res) => {
-        const groups = await Group.find();
+        const groups = await Group.find().sort('number');
         res.render('groups/index', { groups });
     })
 );
@@ -142,6 +142,7 @@ app.get(
 
 app.put(
     '/groups/:id/members/:member_id',
+    validateMember,
     catchAsync(async (req, res) => {
         const { id, member_id } = req.params;
         const { name } = req.body;

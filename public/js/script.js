@@ -1,3 +1,4 @@
+// Bootstrap form validation script
 (function () {
     'use strict';
 
@@ -20,3 +21,9 @@
         );
     });
 })();
+
+// Group deletion confirmation
+const deleteGroupButton = document.querySelector('#deleteGroup');
+deleteGroupButton.onclick = function (event) {
+    if (!confirm('هل أنت متأكد من مسحك للمجموعة')) event.preventDefault();
+};

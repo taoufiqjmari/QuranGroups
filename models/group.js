@@ -17,4 +17,11 @@ const GroupSchema = new Schema({
     ],
 });
 
+const Member = require('./member');
+GroupSchema.post('findOneAndDelete', async function (group) {
+    if (group.members.length) {
+        const res = await Member.deleteMany({ _id: { $in: group.members } });
+    }
+});
+
 module.exports = model('Group', GroupSchema);

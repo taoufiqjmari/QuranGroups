@@ -4,18 +4,18 @@
     <div class="container">
         <div class="row text-center">
             <div class="col-12">
-                <h1 class="border-bottom border-secondary border-2">All Groups</h1>
+                <h1 class="border-bottom border-secondary border-2">المجموعات</h1>
             </div>
             <div class="col-12">
                 <ul class="list-group list-group-flush">
                     <% for (group of groups) {%>
-                    <li class="list-group-item"><a href="/groups/<%= group._id %> "><%= group.number %></a></li>
+                    <li class="list-group-item"><a href="/groups/<%= group._id %> ">المجموعة <%= group.number %></a></li>
                     <% } %>
                 </ul>
             </div>
         </div>
         <div class="row mt-5 w-50 mx-auto">
-            <a class="btn btn-success mb-2" href="/groups/new" role="button">Add group</a>
+            <a class="btn btn-success mb-2" href="/groups/new" role="button">أضف مجموعة</a>
         </div>
     </div>
 </div>
