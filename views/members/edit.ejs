@@ -8,7 +8,7 @@
                 <form action="/groups/<%= member.group %>/members/<%= member._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
                     <div class="mb-3">
                         <label for="name" class="form-label">الإسم</label>
-                        <input type="text" class="form-control" id="name" name="name" value="<%= member.name %>" required />
+                        <input type="text" class="form-control" id="name" name="member[name]" value="<%= member.name %>" required />
                         <div class="valid-feedback">جيد</div>
                         <div class="invalid-feedback">يرجى وضع اسم</div>
                     </div>

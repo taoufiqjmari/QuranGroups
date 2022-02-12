@@ -37,7 +37,6 @@ const ExperssError = require('./utils/ExpressError');
 const ExpressError = require('./utils/ExpressError');
 
 // JOI
-const Joi = require('joi');
 const { groupSchema, memberSchema } = require('./schemas');
 const validateGroup = (req, res, next) => {
     const { error } = groupSchema.validate(req.body);
@@ -59,11 +58,11 @@ const validateMember = (req, res, next) => {
 };
 
 // Routes
-// Groups
 app.get('/', (req, res) => {
     res.redirect('/groups');
 });
 
+// Groups
 app.get(
     '/groups',
     catchAsync(async (req, res) => {
@@ -80,7 +79,7 @@ app.post(
     '/groups',
     validateGroup,
     catchAsync(async (req, res) => {
-        const { number } = req.body;
+        const { number } = req.body.group;
         const group = new Group({ number });
         // Add 60 member automatically to the group
         for (let i = 1; i <= 60; i++) {
@@ -116,7 +115,7 @@ app.put(
     validateGroup,
     catchAsync(async (req, res) => {
         const { id } = req.params;
-        await Group.findByIdAndUpdate(id, req.body);
+        await Group.findByIdAndUpdate(id, req.body.group);
         res.redirect(`/groups/${id}`);
     })
 );
@@ -145,7 +144,7 @@ app.put(
     validateMember,
     catchAsync(async (req, res) => {
         const { id, member_id } = req.params;
-        const { name } = req.body;
+        const { name } = req.body.member;
         await Member.findByIdAndUpdate(member_id, { name });
         res.redirect(`/groups/${id}`);
     })
