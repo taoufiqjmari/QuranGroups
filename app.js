@@ -3,6 +3,15 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+// mongoose
+const mongoose = require('mongoose');
+main().catch((err) => console.log(err));
+async function main() {
+    const db = 'quran-groups';
+    await mongoose.connect(`mongodb://localhost:27017/${db}`);
+    console.log(`MongoDB: connected to '${db}' successfuly`);
+}
+
 // EJS
 const path = require('path');
 const ejsMate = require('ejs-mate');
@@ -20,8 +29,32 @@ app.use(express.urlencoded({ extended: true }));
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
 
+// Session
+const session = require('express-session');
+app.use(
+    session({
+        secret: 'thisisasecret',
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            httpOnly: true,
+            expires: Date.now() * 1000 * 60 * 60 * 24 * 7,
+            maxAge: 1000 * 60 * 60 * 24 * 7,
+        },
+    })
+);
+
+// Flash
+const flash = require('connect-flash');
+app.use(flash());
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+});
+
 // Errors
-const ExperssError = require('./utils/ExpressError');
+const ExpressError = require('./utils/ExpressError');
 
 // Routes
 // Default
@@ -35,7 +68,7 @@ app.use('/groups', groupsRouter);
 
 // Members
 const memberRouter = require('./routes/members');
-app.use('/groups', memberRouter);
+app.use('/groups/:id/members/:member_id', memberRouter);
 
 // Others
 app.all('*', (req, res, next) => {

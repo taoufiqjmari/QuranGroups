@@ -1,15 +1,8 @@
 // Express
 const express = require('express');
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
-// mongoose
-const mongoose = require('mongoose');
-main().catch((err) => console.log(err));
-async function main() {
-    const db = 'quran-groups';
-    await mongoose.connect(`mongodb://localhost:27017/${db}`);
-    console.log(`MongoDB: connected to '${db}' successfuly`);
-}
+// Models
 const Member = require('../models/member');
 
 // Errors
@@ -30,7 +23,7 @@ const validateMember = (req, res, next) => {
 
 // Routes
 router.get(
-    '/:id/members/:member_id/edit',
+    '/edit',
     catchAsync(async (req, res) => {
         const { member_id } = req.params;
         const member = await Member.findById(member_id);
@@ -39,21 +32,23 @@ router.get(
 );
 
 router.put(
-    '/:id/members/:member_id',
+    '/',
     validateMember,
     catchAsync(async (req, res) => {
         const { id, member_id } = req.params;
         const { name } = req.body.member;
         await Member.findByIdAndUpdate(member_id, { name });
+        req.flash('success', 'تم تعديل القارئ بنجاح');
         res.redirect(`/groups/${id}`);
     })
 );
 
 router.delete(
-    '/:id/members/:member_id',
+    '/',
     catchAsync(async (req, res) => {
         const { id, member_id } = req.params;
         await Member.findByIdAndUpdate(member_id, { name: '/////' });
+        req.flash('success', 'تم حذف القارئ بنجاح');
         res.redirect(`/groups/${id}`);
     })
 );

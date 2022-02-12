@@ -9,7 +9,7 @@
             <div class="col-12 text-center">
                 <a class="btn btn-primary w-25" href="/groups/<%= group._id %>/edit" role="button">تعديل المجموعة</a>
                 <form action="/groups/<%= group._id %>?_method=DELETE" method="POST" class="d-inline">
-                    <button id="deleteGroup" type="submit" class="btn btn-danger w-25">مسح المجموعة</button>
+                    <button onclick="deleteGroupButton('<%= group.number %>')" type="submit" class="btn btn-danger w-25">مسح المجموعة</button>
                 </form>
                 <a class="btn btn-secondary w-25" href="/groups" role="button">كل المجموعات</a>
             </div>

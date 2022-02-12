@@ -23,7 +23,10 @@
 })();
 
 // Group deletion confirmation
-const deleteGroupButton = document.querySelector('#deleteGroup');
-deleteGroupButton.onclick = function (event) {
-    if (!confirm('هل أنت متأكد من مسحك للمجموعة')) event.preventDefault();
-};
+// const deleteGroupButton = document.querySelector('#deleteGroup');
+// deleteGroupButton.onclick = function (event) {
+//     if (!confirm('هل أنت متأكد من مسحك للمجموعة')) event.preventDefault();
+// };
+function deleteGroupButton(groupNumber) {
+    if (!confirm(`هل أنت متأكد من مسحك للمجموعة ${groupNumber}`)) event.preventDefault();
+}

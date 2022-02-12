@@ -2,14 +2,7 @@
 const express = require('express');
 const router = express.Router();
 
-// mongoose
-const mongoose = require('mongoose');
-main().catch((err) => console.log(err));
-async function main() {
-    const db = 'quran-groups';
-    await mongoose.connect(`mongodb://localhost:27017/${db}`);
-    console.log(`MongoDB: connected to '${db}' successfuly`);
-}
+// Models
 const Group = require('../models/group');
 const Member = require('../models/member');
 
@@ -55,6 +48,7 @@ router.post(
             group.members.push(mem);
         }
         await group.save();
+        req.flash('success', 'تم إنشاء المجموعة بنجاح');
         res.redirect(`/groups/${group._id}`);
     })
 );
@@ -64,6 +58,10 @@ router.get(
     catchAsync(async (req, res) => {
         const { id } = req.params;
         const group = await Group.findById(id).populate('members');
+        if (!group) {
+            req.flash('error', 'المجموعة غير موجودة');
+            res.redirect('/groups');
+        }
         res.render('groups/show', { group });
     })
 );
@@ -73,6 +71,10 @@ router.get(
     catchAsync(async (req, res) => {
         const { id } = req.params;
         const group = await Group.findById(id);
+        if (!group) {
+            req.flash('error', 'المجموعة غير موجودة');
+            res.redirect('/groups');
+        }
         res.render('groups/edit', { group });
     })
 );
@@ -83,6 +85,7 @@ router.put(
     catchAsync(async (req, res) => {
         const { id } = req.params;
         await Group.findByIdAndUpdate(id, req.body.group);
+        req.flash('success', 'تم تعديل المجموعة بنجاح');
         res.redirect(`/groups/${id}`);
     })
 );
@@ -92,6 +95,7 @@ router.delete(
     catchAsync(async (req, res) => {
         const { id } = req.params;
         await Group.findByIdAndDelete(id);
+        req.flash('success', 'تم حذف المجموعة بنجاح');
         res.redirect(`/groups`);
     })
 );
