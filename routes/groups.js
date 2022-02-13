@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 // Models
+const User = require('../models/user');
 const Group = require('../models/group');
 const Member = require('../models/member');
 
@@ -28,7 +29,7 @@ router.get(
     '/',
     isLoggedIn,
     catchAsync(async (req, res) => {
-        const groups = await Group.find().sort('number');
+        const groups = await Group.find({ author: req.user._id }).sort('number');
         res.render('groups/index', { groups });
     })
 );
@@ -44,6 +45,12 @@ router.post(
     catchAsync(async (req, res) => {
         const { number } = req.body.group;
         const group = new Group({ number });
+        // Add group to author
+        const author = await User.findById(req.user._id);
+        author.groups.push(group);
+        await author.save();
+        // Add author to group
+        group.author = author;
         // Add 60 member automatically to the group
         for (let i = 1; i <= 60; i++) {
             const mem = new Member({ number: i, group });

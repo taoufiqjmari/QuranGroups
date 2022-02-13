@@ -9,6 +9,12 @@ const UserSchema = new Schema({
         required: true,
         unique: true,
     },
+    groups: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Group',
+        },
+    ],
 });
 
 UserSchema.plugin(passportLocalMongoose);

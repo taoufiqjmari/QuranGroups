@@ -8,6 +8,7 @@ async function main() {
 }
 
 // Models
+const User = require('../models/user');
 const Group = require('../models/group');
 const Member = require('../models/member');
 
@@ -17,6 +18,7 @@ const { groups, members } = require('./data');
 // Logic
 const seedDB = async () => {
     // Clear collections
+    await User.deleteMany({});
     await Group.deleteMany({});
     await Member.deleteMany({});
     // Fill collections with new data

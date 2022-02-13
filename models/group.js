@@ -8,6 +8,10 @@ const GroupSchema = new Schema({
         min: [1, "Groups numbers can't be less than 1"],
         required: true,
     },
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },
     members: [
         {
             type: Schema.Types.ObjectId,
