@@ -11,18 +11,17 @@ const { isLoggedIn } = require('../utils/isLoggedIn');
 
 // Errors
 const catchAsync = require('../utils/catchAsync');
+const ExpressError = require('../utils/ExpressError');
 
 // JOI
-// const { memberSchema } = require('../schemas');
-// const validateMember = (req, res, next) => {
-//     const { error } = memberSchema.validate(req.body);
-//     if (error) {
-//         const msg = error.details.map((el) => el.message).join(',');
-//         throw new ExpressError(msg, 400);
-//     } else {
-//         next();
-//     }
-// };
+const { userSchema } = require('../schemas');
+const validateUser = (req, res, next) => {
+    const { error } = userSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map((el) => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    } else next();
+};
 
 // Routes
 router.get('/register', isLoggedIn, (req, res) => {
@@ -32,6 +31,7 @@ router.get('/register', isLoggedIn, (req, res) => {
 router.post(
     '/register',
     isLoggedIn,
+    validateUser,
     catchAsync(async (req, res, next) => {
         try {
             const { username, email, password } = req.body.user;

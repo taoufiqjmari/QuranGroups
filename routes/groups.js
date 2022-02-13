@@ -20,9 +20,7 @@ const validateGroup = (req, res, next) => {
     if (error) {
         const msg = error.details.map((el) => el.message).join(',');
         throw new ExpressError(msg, 400);
-    } else {
-        next();
-    }
+    } else next();
 };
 
 // Routes

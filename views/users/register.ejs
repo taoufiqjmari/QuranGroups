@@ -7,9 +7,9 @@
                 <form action="/register" method="POST" class="needs-validation" novalidate>
                     <div class="mb-3">
                         <label for="username" class="form-label">الإسم</label>
-                        <input type="text" class="form-control" id="username" name="user[username]" required />
+                        <input type="text" class="form-control" id="username" name="user[username]" minlength="3" maxlength="50" required/>
                         <div class="valid-feedback">جيد</div>
-                        <div class="invalid-feedback">يرجى وضع اسم</div>
+                        <div class="invalid-feedback">يرجى وضع اسم يحتوى على 3 حروف على الأقل</div>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">البريد الإلكتروني</label>

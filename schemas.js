@@ -1,5 +1,13 @@
 const Joi = require('joi');
 
+const userSchema = Joi.object({
+    user: Joi.object({
+        username: Joi.string().alphanum().min(3).max(50).required(),
+        email: Joi.string().alphanum().min(3).max(50).required(),
+        password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+    }).required(),
+});
+
 const groupSchema = Joi.object({
     group: Joi.object({
         number: Joi.number().min(1).required(),
@@ -12,4 +20,4 @@ const memberSchema = Joi.object({
     }).required(),
 });
 
-module.exports = { groupSchema, memberSchema };
+module.exports = { userSchema, groupSchema, memberSchema };
