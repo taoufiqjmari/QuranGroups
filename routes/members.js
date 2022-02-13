@@ -5,6 +5,9 @@ const router = express.Router({ mergeParams: true });
 // Models
 const Member = require('../models/member');
 
+// Auth
+const { isLoggedIn } = require('../utils/isLoggedIn');
+
 // Errors
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
@@ -24,6 +27,7 @@ const validateMember = (req, res, next) => {
 // Routes
 router.get(
     '/edit',
+    isLoggedIn,
     catchAsync(async (req, res) => {
         const { member_id } = req.params;
         const member = await Member.findById(member_id);
@@ -33,6 +37,7 @@ router.get(
 
 router.put(
     '/',
+    isLoggedIn,
     validateMember,
     catchAsync(async (req, res) => {
         const { id, member_id } = req.params;
@@ -45,6 +50,7 @@ router.put(
 
 router.delete(
     '/',
+    isLoggedIn,
     catchAsync(async (req, res) => {
         const { id, member_id } = req.params;
         await Member.findByIdAndUpdate(member_id, { name: '/////' });

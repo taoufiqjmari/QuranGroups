@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-info">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/groups">Groups</a>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <% if (!currentUser) { %>
+            <a class="btn btn-primary ms-md-1" href="/login" role="button">تسجيل الدخول</a>
+            <a class="btn btn-primary" href="/register" role="button">إنشاء حساب</a>
+            <% } else { %>
+            <a class="btn btn-primary" href="/logout" role="button">تسجيل خروج</a>
+            <% } %>
+        </div>
+    </div>
+</nav>

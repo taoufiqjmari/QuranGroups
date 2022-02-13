@@ -6,6 +6,9 @@ const router = express.Router();
 const Group = require('../models/group');
 const Member = require('../models/member');
 
+// Auth
+const { isLoggedIn } = require('../utils/isLoggedIn');
+
 // Errors
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
@@ -25,18 +28,20 @@ const validateGroup = (req, res, next) => {
 // Routes
 router.get(
     '/',
+    isLoggedIn,
     catchAsync(async (req, res) => {
         const groups = await Group.find().sort('number');
         res.render('groups/index', { groups });
     })
 );
 
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('groups/new');
 });
 
 router.post(
     '/',
+    isLoggedIn,
     validateGroup,
     catchAsync(async (req, res) => {
         const { number } = req.body.group;
@@ -55,12 +60,13 @@ router.post(
 
 router.get(
     '/:id',
+    isLoggedIn,
     catchAsync(async (req, res) => {
         const { id } = req.params;
         const group = await Group.findById(id).populate('members');
         if (!group) {
             req.flash('error', 'المجموعة غير موجودة');
-            res.redirect('/groups');
+            return res.redirect('/groups');
         }
         res.render('groups/show', { group });
     })
@@ -68,6 +74,7 @@ router.get(
 
 router.get(
     '/:id/edit',
+    isLoggedIn,
     catchAsync(async (req, res) => {
         const { id } = req.params;
         const group = await Group.findById(id);
@@ -81,6 +88,7 @@ router.get(
 
 router.put(
     '/:id',
+    isLoggedIn,
     validateGroup,
     catchAsync(async (req, res) => {
         const { id } = req.params;
@@ -92,6 +100,7 @@ router.put(
 
 router.delete(
     '/:id',
+    isLoggedIn,
     catchAsync(async (req, res) => {
         const { id } = req.params;
         await Group.findByIdAndDelete(id);
