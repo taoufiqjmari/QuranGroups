@@ -3,9 +3,9 @@ const express = require('express');
 const router = express.Router();
 
 // Models
-const User = require('../models/user');
-const Group = require('../models/group');
-const Member = require('../models/member');
+// const User = require('../models/user');
+// const Group = require('../models/group');
+// const Member = require('../models/member');
 
 // Auth
 const { isLoggedIn } = require('../utils/isLoggedIn');
@@ -24,94 +24,16 @@ const validateGroup = (req, res, next) => {
     } else next();
 };
 
+// Controllers
+const groups = require('../controllers/groups');
+
 // Routes
-router.get(
-    '/',
-    isLoggedIn,
-    catchAsync(async (req, res) => {
-        const groups = await Group.find({ author: req.user._id }).sort('number');
-        res.render('groups/index', { groups });
-    })
-);
+router.route('/').get(isLoggedIn, catchAsync(groups.index)).post(isLoggedIn, validateGroup, catchAsync(groups.postNew));
 
-router.get('/new', isLoggedIn, (req, res) => {
-    res.render('groups/new');
-});
+router.get('/new', isLoggedIn, groups.getNew);
 
-router.post(
-    '/',
-    isLoggedIn,
-    validateGroup,
-    catchAsync(async (req, res) => {
-        const { number } = req.body.group;
-        const group = new Group({ number });
-        // Add group to author
-        const author = await User.findById(req.user._id);
-        author.groups.push(group);
-        await author.save();
-        // Add author to group
-        group.author = author;
-        // Add 60 member automatically to the group
-        for (let i = 1; i <= 60; i++) {
-            const mem = new Member({ number: i, group });
-            await mem.save();
-            group.members.push(mem);
-        }
-        await group.save();
-        req.flash('success', 'تم إنشاء المجموعة بنجاح');
-        res.redirect(`/groups/${group._id}`);
-    })
-);
+router.route('/:id').get(isLoggedIn, catchAsync(groups.getGroup)).put(isLoggedIn, validateGroup, catchAsync(groups.putEditGroup)).delete(isLoggedIn, catchAsync(groups.deleteGroup));
 
-router.get(
-    '/:id',
-    isLoggedIn,
-    catchAsync(async (req, res) => {
-        const { id } = req.params;
-        const group = await Group.findById(id).populate('members');
-        if (!group) {
-            req.flash('error', 'المجموعة غير موجودة');
-            return res.redirect('/groups');
-        }
-        res.render('groups/show', { group });
-    })
-);
-
-router.get(
-    '/:id/edit',
-    isLoggedIn,
-    catchAsync(async (req, res) => {
-        const { id } = req.params;
-        const group = await Group.findById(id);
-        if (!group) {
-            req.flash('error', 'المجموعة غير موجودة');
-            res.redirect('/groups');
-        }
-        res.render('groups/edit', { group });
-    })
-);
-
-router.put(
-    '/:id',
-    isLoggedIn,
-    validateGroup,
-    catchAsync(async (req, res) => {
-        const { id } = req.params;
-        await Group.findByIdAndUpdate(id, req.body.group);
-        req.flash('success', 'تم تعديل المجموعة بنجاح');
-        res.redirect(`/groups/${id}`);
-    })
-);
-
-router.delete(
-    '/:id',
-    isLoggedIn,
-    catchAsync(async (req, res) => {
-        const { id } = req.params;
-        await Group.findByIdAndDelete(id);
-        req.flash('success', 'تم حذف المجموعة بنجاح');
-        res.redirect(`/groups`);
-    })
-);
+router.get('/:id/edit', isLoggedIn, catchAsync(groups.getEditGroup));
 
 module.exports = router;

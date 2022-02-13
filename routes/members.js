@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 
 // Models
-const Member = require('../models/member');
+// const Member = require('../models/member');
 
 // Auth
 const { isLoggedIn } = require('../utils/isLoggedIn');
@@ -22,39 +22,12 @@ const validateMember = (req, res, next) => {
     } else next();
 };
 
+// Controllers
+const members = require('../controllers/members');
+
 // Routes
-router.get(
-    '/edit',
-    isLoggedIn,
-    catchAsync(async (req, res) => {
-        const { member_id } = req.params;
-        const member = await Member.findById(member_id);
-        res.render('members/edit', { member });
-    })
-);
+router.route('/').put(isLoggedIn, validateMember, catchAsync(members.putEdit)).delete(isLoggedIn, catchAsync(members.delete));
 
-router.put(
-    '/',
-    isLoggedIn,
-    validateMember,
-    catchAsync(async (req, res) => {
-        const { id, member_id } = req.params;
-        const { name } = req.body.member;
-        await Member.findByIdAndUpdate(member_id, { name });
-        req.flash('success', 'تم تعديل القارئ بنجاح');
-        res.redirect(`/groups/${id}`);
-    })
-);
-
-router.delete(
-    '/',
-    isLoggedIn,
-    catchAsync(async (req, res) => {
-        const { id, member_id } = req.params;
-        await Member.findByIdAndUpdate(member_id, { name: '/////' });
-        req.flash('success', 'تم حذف القارئ بنجاح');
-        res.redirect(`/groups/${id}`);
-    })
-);
+router.get('/edit', isLoggedIn, catchAsync(members.getEdit));
 
 module.exports = router;
