@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const userSchema = Joi.object({
     user: Joi.object({
-        username: Joi.string().alphanum().min(3).max(50).required(),
+        username: Joi.string().min(3).max(50).required(),
         email: Joi.string().min(3).max(50).required(),
         password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
     }).required(),
