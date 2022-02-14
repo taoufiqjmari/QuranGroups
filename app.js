@@ -10,12 +10,13 @@ const app = express();
 const port = 3000;
 
 // mongoose
+const dbName = 'quran-groups';
+const dbUrl = process.env.DB_URL || `mongodb://localhost:27017/${dbName}`;
 const mongoose = require('mongoose');
 main().catch((err) => console.log(err));
 async function main() {
-    const db = 'quran-groups';
-    await mongoose.connect(`mongodb://localhost:27017/${db}`);
-    console.log(`MongoDB: connected to '${db}' successfuly`);
+    await mongoose.connect(dbUrl);
+    console.log(`MongoDB: connected to '${dbName}' successfuly`);
 }
 // Models
 const User = require('./models/user');
@@ -26,10 +27,24 @@ app.use(mongoSanitize());
 
 // Session
 const session = require('express-session');
+
+const MongoStore = require('connect-mongo');
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 3600,
+    crypto: {
+        secret: process.env.SECRET || 'thisisabadsecret',
+    },
+});
+store.on('error', function (err) {
+    console.log('Session store error', err);
+});
+
 app.use(
     session({
+        store,
         name: 'isIn',
-        secret: process.env.SECRET,
+        secret: process.env.SECRET || 'thisisabadsecret',
         resave: false,
         saveUninitialized: false,
         cookie: {
