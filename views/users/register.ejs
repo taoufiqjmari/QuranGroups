@@ -5,6 +5,7 @@
         <div class="row">
             <div class="col-6 offset-3">
                 <form action="/register" method="POST" class="needs-validation" novalidate>
+                    <div class="h1 text-center mb-5 border-bottom border-2">صفحة إنشاء حساب</div>
                     <div class="mb-3">
                         <label for="username" class="form-label">الإسم</label>
                         <input type="text" class="form-control" id="username" name="user[username]" minlength="3" maxlength="50" required/>
@@ -23,7 +24,8 @@
                         <div class="valid-feedback">جيد</div>
                         <div class="invalid-feedback">يرجى وضع كلمة السر</div>
                     </div>
-                    <button type="submit" class="btn btn-success d-block">تسجيل</button>
+                    <button type="submit" class="btn btn-lg btn-success d-inline">تسجيل</button>
+                    <a class="btn btn-lg btn-primary ms-md-1" href="/login" role="button">تسجيل الدخول</a>
                 </form>
             </div>
         </div>

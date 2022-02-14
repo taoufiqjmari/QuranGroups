@@ -1,8 +1,18 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="container vh-100 d-flex justify-content-center align-items-center">
-    <div class="container">
-        <div class="row text-center">
+<div class="container vh-100 d-flex justify-content-center" id="groups">
+    <div class="container d-flex flex-column">
+        <!-- User and Logout -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="h1">المستخدم: <%# groups.author.username %></div>
+            </div>
+            <div class="col-12">
+                <a class="btn btn-lg btn-primary" href="/logout" role="button">تسجيل خروج</a>
+            </div>
+        </div>
+        <!-- Groups -->
+        <div id="groups" class="row text-center">
             <div class="col-12">
                 <h1 class="border-bottom border-secondary border-2">مجموعاتي</h1>
             </div>
@@ -14,6 +24,7 @@
                 </ul>
             </div>
         </div>
+        <!-- Add groups -->
         <div class="row mt-5 w-50 mx-auto">
             <a class="btn btn-success mb-2" href="/groups/new" role="button">أضف مجموعة</a>
         </div>
