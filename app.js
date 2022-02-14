@@ -1,5 +1,5 @@
 // .env
-if (process.env.NODE_ENV != 'production') {
+if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 // console.log(process.env.KEY);
@@ -20,15 +20,21 @@ async function main() {
 // Models
 const User = require('./models/user');
 
+// Security
+const mongoSanitize = require('express-mongo-sanitize');
+app.use(mongoSanitize());
+
 // Session
 const session = require('express-session');
 app.use(
     session({
-        secret: 'thisisasecret',
+        name: 'isIn',
+        secret: process.env.SECRET,
         resave: false,
-        saveUninitialized: true,
+        saveUninitialized: false,
         cookie: {
             httpOnly: true,
+            // secure: true,
             expires: Date.now() * 1000 * 60 * 60 * 24 * 7,
             maxAge: 1000 * 60 * 60 * 24 * 7,
         },
