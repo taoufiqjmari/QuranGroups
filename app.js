@@ -2,12 +2,11 @@
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
-// console.log(process.env.KEY);
 
 // Express
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // mongoose
 const dbName = 'quran-groups';
@@ -126,5 +125,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-    console.log(`Example app listening on http://localhost:${port}`);
+    console.log(`Example app listening on port ${port}`);
 });
