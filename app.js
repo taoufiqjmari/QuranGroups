@@ -1,7 +1,12 @@
 // .env
 if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
+	require('dotenv').config();
 }
+
+// cronjob
+const cron = require('node-cron');
+const { incrementLapChapters } = require('./cronjob');
+cron.schedule('0 0 * * *', incrementLapChapters);
 
 // Express
 const express = require('express');
@@ -14,8 +19,8 @@ const dbUrl = process.env.DB_URL || `mongodb://localhost:27017/${dbName}`;
 const mongoose = require('mongoose');
 main().catch((err) => console.log(err));
 async function main() {
-    await mongoose.connect(dbUrl);
-    console.log(`MongoDB: connected to '${dbName}' successfuly`);
+	await mongoose.connect(dbUrl);
+	console.log(`MongoDB: connected to '${dbName}' successfuly`);
 }
 // Models
 const User = require('./models/user');
@@ -29,30 +34,30 @@ const session = require('express-session');
 
 const MongoStore = require('connect-mongo');
 const store = MongoStore.create({
-    mongoUrl: dbUrl,
-    touchAfter: 24 * 3600,
-    crypto: {
-        secret: process.env.SECRET || 'thisisabadsecret',
-    },
+	mongoUrl: dbUrl,
+	touchAfter: 24 * 3600,
+	crypto: {
+		secret: process.env.SECRET || 'thisisabadsecret',
+	},
 });
 store.on('error', function (err) {
-    console.log('Session store error', err);
+	console.log('Session store error', err);
 });
 
 app.use(
-    session({
-        store,
-        name: 'isIn',
-        secret: process.env.SECRET || 'thisisabadsecret',
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            httpOnly: true,
-            // secure: true,
-            expires: Date.now() * 1000 * 60 * 60 * 24 * 7,
-            maxAge: 1000 * 60 * 60 * 24 * 7,
-        },
-    })
+	session({
+		store,
+		name: 'isIn',
+		secret: process.env.SECRET || 'thisisabadsecret',
+		resave: false,
+		saveUninitialized: false,
+		cookie: {
+			httpOnly: true,
+			// secure: true,
+			expires: Date.now() * 1000 * 60 * 60 * 24 * 7,
+			maxAge: 1000 * 60 * 60 * 24 * 7,
+		},
+	})
 );
 
 // Passport
@@ -68,11 +73,11 @@ passport.deserializeUser(User.deserializeUser());
 const flash = require('connect-flash');
 app.use(flash());
 app.use((req, res, next) => {
-    res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error');
-    // To check whether user is logged in or not on navbar
-    res.locals.currentUser = req.user;
-    next();
+	res.locals.success = req.flash('success');
+	res.locals.error = req.flash('error');
+	// To check whether user is logged in or not on navbar
+	res.locals.currentUser = req.user;
+	next();
 });
 
 // EJS
@@ -98,7 +103,7 @@ const ExpressError = require('./utils/ExpressError');
 // Routes
 // Default
 app.get('/', (req, res) => {
-    res.redirect('/groups');
+	res.redirect('/groups');
 });
 
 // Users
@@ -111,19 +116,20 @@ app.use('/groups', groupsRouter);
 
 // Members
 const membersRouter = require('./routes/members');
+const { update } = require('./models/user');
 app.use('/groups/:id/members/:member_id', membersRouter);
 
 // Others
 app.all('*', (req, res, next) => {
-    next(new ExpressError('Page Not Found', 404));
+	next(new ExpressError('Page Not Found', 404));
 });
 
 app.use((err, req, res, next) => {
-    const { statusCode = 500 } = err;
-    if (!err.message) err.message = 'Oh No, Something Went Wrong';
-    res.status(statusCode).render('error', { err });
+	const { statusCode = 500 } = err;
+	if (!err.message) err.message = 'Oh No, Something Went Wrong';
+	res.status(statusCode).render('error', { err });
 });
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+	console.log(`Example app listening on port ${port}`);
 });
