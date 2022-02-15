@@ -1,5 +1,4 @@
-<% layout('layouts/boilerplate') %> <% let theChapter = group.firstMemberChapter %> <% const date = new Date(); const options = { weekday: 'long',
-year: 'numeric', month: 'long', day: 'numeric' }; %>
+<% layout('layouts/boilerplate') %> <% let theChapter = group.firstMemberChapter %>
 
 <div class="container my-5 d-flex flex-column justify-content-center align-items-center">
 	<div class="row mb-3 w-75 text-center">
@@ -27,8 +26,8 @@ year: 'numeric', month: 'long', day: 'numeric' }; %>
 		<div class="col-12 bg-white">
 			<p id="todaysProgramText">
 				<%= group.header %><br /><br />
-				<%= date.toLocaleString('ar-MA', options) %><br />
-				<span id="hijri-date-box"></span><br />
+				<span id="gregorian-date"></span><br />
+				<span id="hijri-date"></span><br />
 				<span>الختمة: <%= group.lap %><br /></span>
 				<% for (member of group.members) { %> <%= member.number %>. <%= member.name.padEnd(25, '_') %><%= theChapter %><br />
 				<% theChapter < 60 ? theChapter++ : theChapter = 1 } %> <%= group.footer %>
@@ -41,7 +40,7 @@ year: 'numeric', month: 'long', day: 'numeric' }; %>
 	// Copy todays program
 	function copyText(htmlElement) {
 		if (!htmlElement) return;
-		// Direct Whatsapp Share
+		// // Direct Whatsapp Share
 		// document.querySelector('#copyButton').setAttribute('href', `whatsapp://send?text=${htmlElement.innerText}`);
 		var range = document.createRange(); // new Range object
 		range.selectNodeContents(htmlElement); // sets the Range to contain the contents of a Node
@@ -62,19 +61,25 @@ year: 'numeric', month: 'long', day: 'numeric' }; %>
 		copyText(document.querySelector('#todaysProgramText'));
 	};
 
-	// Convert gregorian to Hijri
 	function getHijriDate(gregorianDate) {
 		let date = new Date();
 		fetch(`https://api.aladhan.com/v1/gToH?date=${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)
 			.then((response) => response.json())
 			.then((data) => {
 				const hijri = data.data.hijri;
-				document.querySelector('#hijri-date-box').innerText = 'الموافق ' + hijri.month.number + ' ' + hijri.month.ar + ' ' + hijri.year;
+				document.querySelector('#hijri-date').innerText = 'الموافق ' + hijri.month.number + ' ' + hijri.month.ar + ' ' + hijri.year;
 			});
+	}
+
+	function getGregorianDate(date, options) {
+		document.querySelector('#gregorian-date').innerText = date.toLocaleString('ar-MA', options);
 	}
 
 	window.onload = function () {
 		const date = new Date();
+		const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+		getGregorianDate(date, options);
 		getHijriDate(date.toISOString().split('T')[0]);
 	};
 </script>
