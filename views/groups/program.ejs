@@ -1,0 +1,25 @@
+<% layout('layouts/boilerplate') %> <% let theChapter = group.firstMemberChapter %>
+<div class="container my-5 d-flex flex-column justify-content-center align-items-center">
+	<div class="row mb-3 w-75 text-center">
+		<div class="col">
+			<h1>برنامج المجموعة: <%= group.number %></h1>
+		</div>
+		<div class="col">
+			<a class="btn btn-lg btn-secondary mt-2" href="/groups" role="button">العودة للمجموعات</a>
+		</div>
+	</div>
+	<div class="row w-75">
+		<div class="col">
+			<button type="button" class="btn btn-success btn-lg btn-block my-5 w-100" id="copyButton">نسخ</button>
+		</div>
+	</div>
+	<div class="row w-100 text-center">
+		<div class="col-12 bg-white">
+			<p id="todaysProgramText">
+				الختمة: <%= group.lap %><br />
+				<% for (member of group.members) { %> <%= member.number %>. <%= member.name.padEnd(40, '_') %><%= theChapter %><br />
+				<% theChapter < 60 ? theChapter++ : theChapter = 1 } %>
+			</p>
+		</div>
+	</div>
+</div>

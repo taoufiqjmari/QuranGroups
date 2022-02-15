@@ -1,46 +1,49 @@
 <% layout('layouts/boilerplate') %>
 
 <div class="container d-flex justify-content-center align-items-center">
-    <div class="container">
-        <div class="row text-center">
-            <div class="col-12 mt-5">
-                <h1 class="border-bottom border-secondary border-2">المجموعة <%= group.number %></h1>
-            </div>
-            <div class="col-12 text-center">
-                <a class="btn btn-primary w-25" href="/groups/<%= group._id %>/edit" role="button">تعديل المجموعة</a>
-                <form action="/groups/<%= group._id %>?_method=DELETE" method="POST" class="d-inline">
-                    <button onclick="deleteGroupButton('<%= group.number %>')" type="submit" class="btn btn-danger w-25">مسح المجموعة</button>
-                </form>
+	<div class="container">
+		<div class="row text-center">
+			<div class="col-12 mt-5">
+				<h1 class="border-bottom border-secondary border-2">المجموعة <%= group.number %></h1>
+			</div>
+			<div class="col-12 text-center">
+				<a class="btn btn-primary w-25" href="/groups/<%= group._id %>/edit" role="button">تعديل المجموعة</a>
                 <a class="btn btn-secondary w-25" href="/groups" role="button">كل المجموعات</a>
-            </div>
-            <div class="col-12 mt-5">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th scope="col">رقم القارئ</th>
-                            <th scope="col">إسم القارئ</th>
-                            <th scope="col">تعديل القارئ</th>
-                            <th scope="col">حذف القارئ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for (member of group.members) {%>
-                        <tr>
-                            <th scope="row" class="text-secondary"><%= member.number %></th>
-                            <td><%= member.name %></td>
-                            <td>
-                                <a class="btn text-primary" href="/groups/<%= group._id %>/members/<%= member._id %>/edit" role="button"><i class="bi bi-pencil-square"></i></a>
-                            </td>
-                            <td>
-                                <form action="/groups/<%= group._id %>/members/<%= member._id %>?_method=DELETE" method="POST">
-                                    <button type="submit" class="btn text-danger"><i class="bi bi-trash"></i></button>
-                                </form>
-                            </td>
-                        </tr>
-                        <% } %>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+				<form action="/groups/<%= group._id %>?_method=DELETE" method="POST" class="d-inline">
+					<button onclick="deleteGroupButton('<%= group.number %>')" type="submit" class="btn btn-danger w-25">مسح المجموعة</button>
+				</form>
+				<a class="btn btn-success w-25 mt-2" href="/groups/<%= group._id %>/program" role="button">برنامج اليوم</a>
+			</div>
+			<div class="col-12 mt-5">
+				<table class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th scope="col">رقم القارئ</th>
+							<th scope="col">إسم القارئ</th>
+							<th scope="col">تعديل القارئ</th>
+							<th scope="col">حذف القارئ</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% for (member of group.members) {%>
+						<tr>
+							<th scope="row" class="text-secondary"><%= member.number %></th>
+							<td><%= member.name %></td>
+							<td>
+								<a class="btn text-primary" href="/groups/<%= group._id %>/members/<%= member._id %>/edit" role="button"
+									><i class="bi bi-pencil-square"></i
+								></a>
+							</td>
+							<td>
+								<form action="/groups/<%= group._id %>/members/<%= member._id %>?_method=DELETE" method="POST">
+									<button type="submit" class="btn text-danger"><i class="bi bi-trash"></i></button>
+								</form>
+							</td>
+						</tr>
+						<% } %>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>

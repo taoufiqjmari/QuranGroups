@@ -17,11 +17,11 @@ const ExpressError = require('../utils/ExpressError');
 // JOI
 const { groupSchema } = require('../schemas');
 const validateGroup = (req, res, next) => {
-    const { error } = groupSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map((el) => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    } else next();
+	const { error } = groupSchema.validate(req.body);
+	if (error) {
+		const msg = error.details.map((el) => el.message).join(',');
+		throw new ExpressError(msg, 400);
+	} else next();
 };
 
 // Controllers
@@ -32,8 +32,14 @@ router.route('/').get(isLoggedIn, catchAsync(groups.index)).post(isLoggedIn, val
 
 router.get('/new', isLoggedIn, groups.getNew);
 
-router.route('/:id').get(isLoggedIn, catchAsync(groups.getGroup)).put(isLoggedIn, validateGroup, catchAsync(groups.putEditGroup)).delete(isLoggedIn, catchAsync(groups.deleteGroup));
+router
+	.route('/:id')
+	.get(isLoggedIn, catchAsync(groups.getGroup))
+	.put(isLoggedIn, validateGroup, catchAsync(groups.putEditGroup))
+	.delete(isLoggedIn, catchAsync(groups.deleteGroup));
 
 router.get('/:id/edit', isLoggedIn, catchAsync(groups.getEditGroup));
+
+router.get('/:id/program', isLoggedIn, catchAsync(groups.getGroupProgram));
 
 module.exports = router;
