@@ -32,7 +32,7 @@ year: 'numeric', month: 'long', day: 'numeric' }; %>
 
 				<%= group.header %><br />
 				الختمة: <%= group.lap %><br />
-				<% for (member of group.members) { %> <%= member.number %>. <%= member.name.padEnd(30, '_') %><%= theChapter %><br />
+				<% for (member of group.members) { %> <%= member.number %>. <%= member.name.padEnd(20, '_') %><%= theChapter %><br />
 				<% theChapter < 60 ? theChapter++ : theChapter = 1 } %> <%= group.footer %>
 			</p>
 		</div>
