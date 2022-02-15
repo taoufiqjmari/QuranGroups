@@ -61,8 +61,7 @@
 		copyText(document.querySelector('#todaysProgramText'));
 	};
 
-	function getHijriDate(gregorianDate) {
-		let date = new Date();
+	function getHijriDate(date) {
 		fetch(`https://api.aladhan.com/v1/gToH?date=${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)
 			.then((response) => response.json())
 			.then((data) => {
@@ -80,6 +79,6 @@
 		const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
 		getGregorianDate(date, options);
-		getHijriDate(date.toISOString().split('T')[0]);
+		getHijriDate(date);
 	};
 </script>

@@ -10,12 +10,13 @@ const GroupSchema = new Schema({
 	},
 	lap: {
 		type: Number,
-		min: [1, "Groups numbers can't be less than 1"],
+		min: [1, "Groups laps can't be less than 1"],
 		required: true,
 	},
 	firstMemberChapter: {
 		type: Number,
-		min: [1, "Groups numbers can't be less than 1"],
+		min: [1, "A member's chapter can't be less than 1"],
+		max: [60, "A member's chapter can't be greater than 60"],
 		required: true,
 	},
 	author: {

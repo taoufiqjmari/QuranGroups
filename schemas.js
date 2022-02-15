@@ -12,7 +12,7 @@ const groupSchema = Joi.object({
 	group: Joi.object({
 		number: Joi.number().min(1).required(),
 		lap: Joi.number().min(1).required(),
-		firstMemberChapter: Joi.number().min(1).required(),
+		firstMemberChapter: Joi.number().min(1).max(60).required(),
 		header: Joi.string().allow(null, ''),
 		footer: Joi.string().allow(null, ''),
 	}).required(),
