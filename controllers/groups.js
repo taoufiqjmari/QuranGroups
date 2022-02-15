@@ -5,7 +5,8 @@ const Member = require('../models/member');
 
 module.exports.index = async (req, res) => {
     const groups = await Group.find({ author: req.user._id }).sort('number');
-    res.render('groups/index', { groups });
+    const user = await User.findOne({ _id: req.user._id });
+    res.render('groups/index', { groups, user });
 };
 
 module.exports.getNew = (req, res) => {

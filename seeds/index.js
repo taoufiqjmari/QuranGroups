@@ -22,16 +22,16 @@ const seedDB = async () => {
     await Group.deleteMany({});
     await Member.deleteMany({});
     // Fill collections with new data
-    for (group of groups) {
-        const gr = new Group(group);
-        for (member of members) {
-            const mem = new Member(member);
-            mem.group = gr;
-            await mem.save();
-            gr.members.push(mem);
-        }
-        await gr.save();
-    }
+    // for (group of groups) {
+    //     const gr = new Group(group);
+    //     for (member of members) {
+    //         const mem = new Member(member);
+    //         mem.group = gr;
+    //         await mem.save();
+    //         gr.members.push(mem);
+    //     }
+    //     await gr.save();
+    // }
 };
 
 // Execution
