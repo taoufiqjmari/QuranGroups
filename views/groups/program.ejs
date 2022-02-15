@@ -12,6 +12,7 @@ year: 'numeric', month: 'long', day: 'numeric' }; %>
 	</div>
 	<div class="row w-75">
 		<div class="col">
+			<a class="btn btn-lg btn-secondary mt-2" href="whatsapp://send?text=Your message here" role="button">نسخنسخ</a>
 			<button type="button" class="btn btn-success btn-lg btn-block my-5 w-100" id="copyButton">نسخ</button>
 		</div>
 	</div>
@@ -24,7 +25,7 @@ year: 'numeric', month: 'long', day: 'numeric' }; %>
 
 				<%= group.header %><br />
 				الختمة: <%= group.lap %><br />
-				<% for (member of group.members) { %> <%= member.number %>. <%= member.name.padEnd(40, '_') %><%= theChapter %><br />
+				<% for (member of group.members) { %> <%= member.number %>. <%= member.name.padEnd(30, '_') %><%= theChapter %><br />
 				<% theChapter < 60 ? theChapter++ : theChapter = 1 } %> <%= group.footer %>
 			</p>
 		</div>
