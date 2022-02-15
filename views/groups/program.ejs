@@ -56,7 +56,7 @@ year: 'numeric', month: 'long', day: 'numeric' }; %>
 
 	// Convert gregorian to Hijri
 	function getHijriDate(gregorianDate) {
-		fetch('http://api.aladhan.com/v1/gToH?date=15-02-2022')
+		fetch('https://api.aladhan.com/v1/gToH?date=15-02-2022')
 			.then((response) => response.json())
 			.then((data) => {
 				const hijri = data.data.hijri;
