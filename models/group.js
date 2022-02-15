@@ -21,9 +21,15 @@ const GroupSchema = new Schema({
     ],
 });
 
+const User = require('./user');
 const Member = require('./member');
 GroupSchema.post('findOneAndDelete', async function (group) {
+    // Delete the 50 members of the group after deleting the group
     await Member.deleteMany({ _id: { $in: group.members } });
+    // Delete the group from user
+    const filter = { _id: group.author };
+    const update = { $pull: { groups: group._id } };
+    await User.findOneAndUpdate(filter, update, { new: true });
 });
 
 module.exports = model('Group', GroupSchema);
