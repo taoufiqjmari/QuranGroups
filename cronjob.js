@@ -8,5 +8,4 @@ module.exports.incrementLapChapters = async function () {
 		},
 	};
 	await Group.updateMany({}, update);
-	console.log('DONE');
 };
