@@ -12,8 +12,15 @@ year: 'numeric', month: 'long', day: 'numeric' }; %>
 	</div>
 	<div class="row w-75">
 		<div class="col">
-			<a class="btn btn-lg btn-secondary mt-2" href="whatsapp://send?text=Your message here" role="button">نسخنسخ</a>
-			<button type="button" class="btn btn-success btn-lg btn-block my-5 w-100" id="copyButton">نسخ</button>
+			<a
+				href="whatsapp://send?text=<%=  %>"
+				data-action="share/whatsapp/share"
+				class="btn btn-success btn-lg btn-block my-5 w-100"
+				id="copyButton"
+				target="_blank"
+				>نسخ</a
+			>
+			<!-- <button type="button" class="btn btn-success btn-lg btn-block my-5 w-100" id="copyButton">نسخ</button> -->
 		</div>
 	</div>
 	<div class="row w-100 text-center">
@@ -36,19 +43,20 @@ year: 'numeric', month: 'long', day: 'numeric' }; %>
 	// Copy todays program
 	function copyText(htmlElement) {
 		if (!htmlElement) return;
+		document.querySelector('#copyButton').setAttribute('href', `whatsapp://send?text=${htmlElement.innerText}`);
+		// var range = document.createRange(); // new Range object
+		// range.selectNodeContents(htmlElement); // sets the Range to contain the contents of a Node
+		// console.log(htmlElement.innerText);
 
-		var range = document.createRange(); // new Range object
-		range.selectNodeContents(htmlElement); // sets the Range to contain the contents of a Node
+		// var selection = window.getSelection(); // a Selection object representing the range of text
+		// 										// selected by the user or the current position of the caret.
+		// selection.removeAllRanges(); // removes all ranges from the selection
+		// selection.addRange(range); // adds a Range to a Selection
 
-		var selection = window.getSelection(); // a Selection object representing the range of text
-		// selected by the user or the current position of the caret.
-		selection.removeAllRanges(); // removes all ranges from the selection
-		selection.addRange(range); // adds a Range to a Selection
+		// document.execCommand('copy'); // Copies the current selection to the clipboard
+		// selection.removeAllRanges(); // removes all ranges from the selection
 
-		document.execCommand('copy'); // Copies the current selection to the clipboard
-		selection.removeAllRanges(); // removes all ranges from the selection
-
-		alert('لقد تم نسخ البرنامج');
+		// alert('لقد تم نسخ البرنامج');
 	}
 
 	document.querySelector('#copyButton').onclick = function () {
