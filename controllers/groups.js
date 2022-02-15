@@ -14,8 +14,8 @@ module.exports.getNew = (req, res) => {
 };
 
 module.exports.postNew = async (req, res) => {
-	const { number, lap, firstMemberChapter } = req.body.group;
-	const group = new Group({ number, lap, firstMemberChapter });
+	const { number, lap, firstMemberChapter, header, footer } = req.body.group;
+	const group = new Group({ number, lap, firstMemberChapter, header, footer });
 	// Add group to author
 	const author = await User.findById(req.user._id);
 	author.groups.push(group);

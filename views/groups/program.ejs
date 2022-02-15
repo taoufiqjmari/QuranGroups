@@ -1,4 +1,6 @@
-<% layout('layouts/boilerplate') %> <% let theChapter = group.firstMemberChapter %>
+<% layout('layouts/boilerplate') %> <% let theChapter = group.firstMemberChapter %> <% const date = new Date(); const options = { weekday: 'long',
+year: 'numeric', month: 'long', day: 'numeric' }; %>
+
 <div class="container my-5 d-flex flex-column justify-content-center align-items-center">
 	<div class="row mb-3 w-75 text-center">
 		<div class="col">
@@ -16,10 +18,54 @@
 	<div class="row w-100 text-center">
 		<div class="col-12 bg-white">
 			<p id="todaysProgramText">
+				<%= date.toLocaleString('ar-MA', options) %><br /><br />
+
+				<span id="hijri-date-box"></span><br /><br />
+
+				<%= group.header %><br />
 				الختمة: <%= group.lap %><br />
 				<% for (member of group.members) { %> <%= member.number %>. <%= member.name.padEnd(40, '_') %><%= theChapter %><br />
-				<% theChapter < 60 ? theChapter++ : theChapter = 1 } %>
+				<% theChapter < 60 ? theChapter++ : theChapter = 1 } %> <%= group.footer %>
 			</p>
 		</div>
 	</div>
 </div>
+
+<script>
+	// Copy todays program
+	function copyText(htmlElement) {
+		if (!htmlElement) return;
+
+		var range = document.createRange(); // new Range object
+		range.selectNodeContents(htmlElement); // sets the Range to contain the contents of a Node
+
+		var selection = window.getSelection(); // a Selection object representing the range of text
+		// selected by the user or the current position of the caret.
+		selection.removeAllRanges(); // removes all ranges from the selection
+		selection.addRange(range); // adds a Range to a Selection
+
+		document.execCommand('copy'); // Copies the current selection to the clipboard
+		selection.removeAllRanges(); // removes all ranges from the selection
+
+		alert('لقد تم نسخ البرنامج');
+	}
+
+	document.querySelector('#copyButton').onclick = function () {
+		copyText(document.querySelector('#todaysProgramText'));
+	};
+
+	// Convert gregorian to Hijri
+	function getHijriDate(gregorianDate) {
+		fetch('http://api.aladhan.com/v1/gToH?date=15-02-2022')
+			.then((response) => response.json())
+			.then((data) => {
+				const hijri = data.data.hijri;
+				document.querySelector('#hijri-date-box').innerText = 'الموافق ' + hijri.month.number + ' ' + hijri.month.ar + ' ' + hijri.year;
+			});
+	}
+
+	window.onload = function () {
+		const date = new Date();
+		getHijriDate(date.toISOString().split('T')[0]);
+	};
+</script>

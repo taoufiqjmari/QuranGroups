@@ -29,6 +29,12 @@ const GroupSchema = new Schema({
 			required: true,
 		},
 	],
+	header: {
+		type: String,
+	},
+	footer: {
+		type: String,
+	},
 });
 
 const User = require('./user');

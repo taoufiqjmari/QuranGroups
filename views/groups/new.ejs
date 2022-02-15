@@ -8,49 +8,32 @@
 				<form action="/groups" method="POST" class="needs-validation" novalidate>
 					<div class="mb-3">
 						<label for="number" class="form-label">الرقم</label>
-						<input
-							type="number"
-							min="1"
-							class="form-control"
-							id="number"
-							name="group[number]"
-							required
-						/>
+						<input type="number" min="1" class="form-control" id="number" name="group[number]" required />
 						<div class="valid-feedback">جيد</div>
 						<div class="invalid-feedback">ضع رقما يساوي أو أكبر من 1</div>
 					</div>
 					<div class="mb-3">
-						<label for="number" class="form-label">الختمة</label>
-						<input
-							type="number"
-							min="1"
-							class="form-control"
-							id="number"
-							name="group[lap]"
-							required
-						/>
+						<label for="lap" class="form-label">الختمة</label>
+						<input type="number" min="1" class="form-control" id="lap" name="group[lap]" required />
 						<div class="valid-feedback">جيد</div>
 						<div class="invalid-feedback">ضع رقما يساوي أو أكبر من 1</div>
 					</div>
 					<div class="mb-3">
-						<label for="number" class="form-label"
-							>الحزب الخاص بأول عضو في المجموعة</label
-						>
-						<input
-							type="number"
-							min="1"
-							class="form-control"
-							id="number"
-							name="group[firstMemberChapter]"
-							required
-						/>
+						<label for="chapter" class="form-label">الحزب الخاص بأول عضو في المجموعة</label>
+						<input type="number" min="1" class="form-control" id="chapter" name="group[firstMemberChapter]" required />
 						<div class="valid-feedback">جيد</div>
 						<div class="invalid-feedback">ضع رقما يساوي أو أكبر من 1</div>
+					</div>
+					<div class="mb-3">
+						<label for="header" class="form-label">المقدمة</label>
+						<textarea class="form-control" id="header" name="group[header]"></textarea>
+					</div>
+					<div class="mb-3">
+						<label for="footer" class="form-label">الخاتمة</label>
+						<textarea class="form-control" id="footer" name="group[footer]"></textarea>
 					</div>
 					<button type="submit" class="btn btn-success d-block">أضف</button>
-					<a class="btn btn-secondary mt-2" href="/groups" role="button"
-						>العودة للمجموعات</a
-					>
+					<a class="btn btn-secondary mt-2" href="/groups" role="button">العودة للمجموعات</a>
 				</form>
 			</div>
 		</div>

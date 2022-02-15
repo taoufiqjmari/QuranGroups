@@ -4,7 +4,7 @@ const userSchema = Joi.object({
 	user: Joi.object({
 		username: Joi.string().min(3).max(50).required(),
 		email: Joi.string().min(3).max(50).required(),
-		password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+		password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
 	}).required(),
 });
 
@@ -13,6 +13,8 @@ const groupSchema = Joi.object({
 		number: Joi.number().min(1).required(),
 		lap: Joi.number().min(1).required(),
 		firstMemberChapter: Joi.number().min(1).required(),
+		header: Joi.string().allow(null, ''),
+		footer: Joi.string().allow(null, ''),
 	}).required(),
 });
 

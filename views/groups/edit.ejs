@@ -5,44 +5,21 @@
 		<div class="row">
 			<div class="col-3"></div>
 			<div class="col-6">
-				<form
-					action="/groups/<%= group._id %>?_method=PUT"
-					method="POST"
-					class="needs-validation"
-					novalidate
-				>
+				<form action="/groups/<%= group._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
 					<div class="mb-3">
 						<label for="number" class="form-label">الرقم</label>
-						<input
-							type="number"
-							min="1"
-							class="form-control"
-							id="number"
-							name="group[number]"
-							value="<%= group.number %>"
-							required
-						/>
+						<input type="number" min="1" class="form-control" id="number" name="group[number]" value="<%= group.number %>" required />
 						<div class="valid-feedback">جيد</div>
 						<div class="invalid-feedback">ضع رقما يساوي أو أكبر من 1</div>
 					</div>
 					<div class="mb-3">
 						<label for="number" class="form-label">الختمة</label>
-						<input
-							type="number"
-							min="1"
-							class="form-control"
-							id="number"
-							name="group[lap]"
-							value="<%= group.lap %>"
-							required
-						/>
+						<input type="number" min="1" class="form-control" id="number" name="group[lap]" value="<%= group.lap %>" required />
 						<div class="valid-feedback">جيد</div>
 						<div class="invalid-feedback">ضع رقما يساوي أو أكبر من 1</div>
 					</div>
 					<div class="mb-3">
-						<label for="number" class="form-label"
-							>الحزب الخاص بأول عضو في المجموعة</label
-						>
+						<label for="number" class="form-label">الحزب الخاص بأول عضو في المجموعة</label>
 						<input
 							type="number"
 							min="1"
@@ -55,13 +32,16 @@
 						<div class="valid-feedback">جيد</div>
 						<div class="invalid-feedback">ضع رقما يساوي أو أكبر من 1</div>
 					</div>
+					<div class="mb-3">
+						<label for="header" class="form-label">المقدمة</label>
+						<textarea class="form-control" id="header" name="group[header]"><%= group.header %></textarea>
+					</div>
+					<div class="mb-3">
+						<label for="footer" class="form-label">الخاتمة</label>
+						<textarea class="form-control" id="footer" name="group[footer]"><%= group.footer %></textarea>
+					</div>
 					<button type="submit" class="btn btn-lg btn-success d-block">تعديل</button>
-					<a
-						class="btn btn-lg btn-secondary mt-2"
-						href="/groups/<%= group._id %>"
-						role="button"
-						>العودة للمجموعات</a
-					>
+					<a class="btn btn-lg btn-secondary mt-2" href="/groups/<%= group._id %>" role="button">العودة للمجموعات</a>
 				</form>
 			</div>
 		</div>

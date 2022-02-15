@@ -30,25 +30,3 @@
 function deleteGroupButton(groupNumber) {
 	if (!confirm(`هل أنت متأكد من مسحك للمجموعة ${groupNumber}`)) event.preventDefault();
 }
-
-// Copy todays program
-function copyText(htmlElement) {
-	if (!htmlElement) return;
-
-	var range = document.createRange(); // new Range object
-	range.selectNodeContents(htmlElement); // sets the Range to contain the contents of a Node
-
-	var selection = window.getSelection(); // a Selection object representing the range of text
-	// selected by the user or the current position of the caret.
-	selection.removeAllRanges(); // removes all ranges from the selection
-	selection.addRange(range); // adds a Range to a Selection
-
-	document.execCommand('copy'); // Copies the current selection to the clipboard
-	selection.removeAllRanges(); // removes all ranges from the selection
-
-	alert('لقد تم نسخ البرنامج');
-}
-
-document.querySelector('#copyButton').onclick = function () {
-	copyText(document.querySelector('#todaysProgramText'));
-};
