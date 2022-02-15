@@ -6,7 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 // cronjob
 const cron = require('node-cron');
 const { incrementLapChapters } = require('./cronjob');
-cron.schedule('0 18 * * *', incrementLapChapters);
+cron.schedule('0 0 * * *', incrementLapChapters);
 
 // Express
 const express = require('express');
