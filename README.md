@@ -1,8 +1,8 @@
 # QuranGroups
 
-<img src="./imgs/img_1.png" width="300">
-<img src="./imgs/img_2.png" width="300">
-<img src="./imgs/img_3.png" width="300">
+<img src="./imgs/img_1.png" width="600">
+<img src="./imgs/img_2.png" width="600">
+<img src="./imgs/img_3.png" width="600">
 
 ```
 This is a small Fullstack app using JavaScript for the frontend and the backend.
